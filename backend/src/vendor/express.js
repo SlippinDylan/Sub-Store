@@ -7,8 +7,12 @@ import {
     NODE_CORS_ALLOWED_ORIGINS_ENV,
     resolveRuntimeCorsPolicy,
 } from '@/utils/cors';
+import { getHttpServerFactory } from '@/runtime/http-server';
 
 export default function express({ substore: $, port, host }) {
+    const runtimeFactory = getHttpServerFactory();
+    if (runtimeFactory) return runtimeFactory({ substore: $, port, host });
+
     const { isNode } = ENV();
     const corsPolicy = resolveRuntimeCorsPolicy({ isNode });
     $.info(

@@ -233,7 +233,10 @@ export default async function download(
             );
         }
         if (customCached) {
-            if (awaitCustomCache) {
+            // A Worker request owns the synchronous storage transaction. Keep
+            // cache refreshes inside that lifetime instead of mutating state
+            // after the Durable Object has committed and released its queue.
+            if (awaitCustomCache || $.env.isWorker) {
                 $.info(`乐观缓存: URL ${safeUrl}\n本次进行请求 尝试更新缓存`);
                 try {
                     await download(

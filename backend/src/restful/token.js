@@ -11,6 +11,8 @@ import { insertByPosition } from '@/utils/database';
 import { getCreateItemPosition } from '@/utils/create-item-position';
 import { archiveShare } from '@/utils/archive';
 import { normalizeAgePublicKeyConfig } from '@/utils/age';
+import ms from 'ms';
+import { customAlphabet, urlAlphabet } from 'nanoid';
 
 export default function register($app) {
     if (!$.read(TOKENS_KEY)) $.write([], TOKENS_KEY);
@@ -59,7 +61,8 @@ function getAllTokens(req, res) {
 }
 
 async function signToken(req, res) {
-    if (!ENV().isNode) {
+    const { isNode, isWorker } = ENV();
+    if (!isNode && !isWorker) {
         return failed(
             res,
             new RequestInvalidError(
@@ -157,7 +160,6 @@ function resolveDurationExpiration(options = {}, { required = false } = {}) {
         return null;
     }
 
-    const ms = eval(`require("ms")`);
     const expiresIn = ms(rawExpiresIn);
     if (expiresIn == null || isNaN(expiresIn) || expiresIn <= 0) {
         throw new RequestInvalidError(
@@ -345,11 +347,10 @@ function createTokenItem(payload, options = {}) {
         exp = durationExpiration?.exp;
     }
 
-    const nanoid = eval(`require("nanoid")`);
     const tokens = $.read(TOKENS_KEY) || [];
     if (!token) {
         do {
-            token = nanoid.customAlphabet(nanoid.urlAlphabet)();
+            token = customAlphabet(urlAlphabet)();
         } while (
             tokens.find(
                 (item) =>

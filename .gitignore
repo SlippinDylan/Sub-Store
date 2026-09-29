@@ -45,6 +45,9 @@ build/Release
 
 # Dependency directories
 node_modules/
+.pnpm-store/
+.wrangler/
+.engramory-memory/
 jspm_packages/
 
 # Snowpack dependency directory (https://snowpack.dev/)
@@ -77,6 +80,8 @@ web_modules/
 # dotenv environment variables file
 .env
 .env.test
+.dev.vars
+.dev.vars.*
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache

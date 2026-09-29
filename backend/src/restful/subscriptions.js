@@ -263,8 +263,9 @@ function getSubscription(req, res) {
     let { name } = req.params;
     let { raw } = req.query;
     const allSubs = $.read(SUBS_KEY);
-    const sub = findByName(allSubs, name);
-    delete sub.subscriptions;
+    const storedSub = findByName(allSubs, name);
+    const sub = storedSub ? { ...storedSub } : storedSub;
+    if (sub) delete sub.subscriptions;
     if (sub) {
         if (raw) {
             res.set('content-type', 'application/json')
