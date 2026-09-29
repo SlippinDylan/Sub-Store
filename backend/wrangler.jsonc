@@ -3,6 +3,7 @@
     "name": "sub-store-cloudflare",
     "main": "dist/sub-store.cloudflare.js",
     "no_bundle": true,
+    "keep_vars": true,
     "build": {
         "command": "pnpm bundle:cloudflare"
     },

@@ -103,6 +103,8 @@ Workers & Pages
 
 保存后让 Cloudflare 创建包含该 Secret 的新版本。
 
+仓库的 `wrangler.jsonc` 已启用 `keep_vars`。以后从 GitHub 自动部署时，Wrangler 会保留通过 Dashboard 管理、但没有写进仓库的运行时变量和 Secret。
+
 ### 方法二：Wrangler
 
 ```bash
