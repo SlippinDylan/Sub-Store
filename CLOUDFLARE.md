@@ -45,6 +45,24 @@ http://localhost:8787/dev/api/utils/env
 
 ## 生产部署
 
+### Cloudflare Dashboard Git 部署
+
+在 Workers & Pages 中创建应用并连接 GitHub，填写：
+
+```text
+Git 仓库：SlippinDylan/Sub-Store
+生产分支：worker
+根目录：backend
+构建命令：pnpm bundle:cloudflare
+部署命令：pnpm wrangler deploy
+```
+
+Workers Builds 不读取 `wrangler.jsonc` 中的 Custom Build 命令，因此 Dashboard 的“构建命令”不能省略。部署命令会使用 `backend/package.json` 中锁定的 Wrangler 版本。
+
+后端第一次部署时还没有管理 Secret，管理 API 会安全地返回 401。部署完成后，再按下文任一方法设置 `SUB_STORE_FRONTEND_BACKEND_PATH`。
+
+### Wrangler 手动部署
+
 先登录 Cloudflare：
 
 ```bash
